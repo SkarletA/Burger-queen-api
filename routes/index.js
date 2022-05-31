@@ -1,11 +1,23 @@
+const cors = require('cors');
 const auth = require('./auth');
 const users = require('./users');
 const products = require('./products');
 const orders = require('./orders');
+const { db } = require('../db');
 
 const root = (app, next) => {
   const pkg = app.get('pkg');
-  app.get('/', (req, res) => res.json({ name: pkg.name, version: pkg.version }));
+  app.use(cors());
+
+  const corsOptions = {
+    origin: 'http://localhost:3000',
+    optionSucessStatus: 200,
+  };
+  app.get('/', cors(corsOptions), (req, res) => res.json({ name: pkg.name, version: pkg.version }));
+  app.get('/empleados', cors(corsOptions), (req, res) => res.json(db.empleados));
+  app.get('/menu', (req, res) => res.json(db.menu));
+  app.get('/menuLunch', (req, res) => res.json(db.menuLunch));
+  app.get('/order', (req, res) => res.json(db.orders));
   app.all('*', (req, resp, nextAll) => nextAll(404));
   return next();
 };
