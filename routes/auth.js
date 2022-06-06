@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config');
 
-const { secret } = config;
+const { secret, adminEmail, adminPassword } = config;
 
 /** @module auth */
 module.exports = (app, nextMain) => {
@@ -19,8 +19,8 @@ module.exports = (app, nextMain) => {
    */
   app.post('/auth', (req, resp, next) => {
     // const { email, password } = req.body;
-    const email = 'admin@localhost';
-    const password = 'changeme123';
+    const email = '';
+    const password = '';
 
     if (!email || !password) {
       return next(400);
@@ -31,7 +31,7 @@ module.exports = (app, nextMain) => {
     console.info(userEmail);
 
     function generateAccessToken(userEmail) {
-      return jwt.sign(userEmail, secret, { expiresIn: '5m' });
+      return jwt.sign(userEmail, secret, { expiresIn: '120m' });
     }
     const accessToken = generateAccessToken(userEmail);
 
@@ -40,6 +40,7 @@ module.exports = (app, nextMain) => {
       token: accessToken,
     });
 
+    console.info(accessToken);
     next(200);
   });
 

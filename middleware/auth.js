@@ -2,25 +2,26 @@ const jwt = require('jsonwebtoken');
 
 module.exports = (secret) => (req, resp, next) => {
   const { authorization } = req.headers;
+  console.info(authorization);
 
   if (!authorization) {
-    return resp.send('access denead');
+    return resp.send('!authorization access denied');
   }
 
-  const [type, token] = authorization.split(' ');
-  if (type.toLowerCase() !== 'bearer') {
-    return next();
-  }
+  const [token] = authorization.split(' ');
+  // if (type.toLowerCase() !== 'bearer') {
+  //   return next();
+  // }
 
   jwt.verify(token, secret, (err, decodedToken) => {
     if (err) {
-      resp.send('access denied');
+      console.info('error en el token');
+      resp.send('error en la verificación del token ');
     } else {
       req.decodedToken = decodedToken;
       return next();
     }
-
-    console.info(decodedToken.uid);
+    console.info('token verify', token);
     // TODO: Verificar identidad del usuario usando `decodeToken.uid`
   });
 };

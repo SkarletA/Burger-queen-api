@@ -1,6 +1,6 @@
 const {
   getUsers,
-} = require('../users');
+} = require('../empleados');
 
 describe('getUsers', () => {
   it('should get users collection', (done) => {

@@ -16,11 +16,11 @@ const root = (app, next) => {
     optionSucessStatus: 200,
   };
   app.get('/', cors(corsOptions), (req, res) => res.json({ name: pkg.name, version: pkg.version }));
-  app.get('/auth', cors(corsOptions), (req, res) => res.json(db.auth));
-  app.get('/empleados', cors(corsOptions), authMiddleware, (req, res) => res.json(db.empleados));
-  app.get('/menu', cors(corsOptions), authMiddleware, (req, res) => res.json(db.menu));
-  app.get('/menuLunch', cors(corsOptions), authMiddleware, (req, res) => res.json(db.menuLunch));
-  app.get('/order', cors(corsOptions), authMiddleware, (req, res) => res.json(db.orders));
+  // app.get('/auth', cors(corsOptions), (req, res) => res.json(db.auth));
+  app.get('/empleado', cors(corsOptions), (req, res) => res.json(db.empleado));
+  app.get('/menu', cors(corsOptions), (req, res) => res.json(db.menu));
+  app.get('/menuLunch', cors(corsOptions), (req, res) => res.json(db.menuLunch));
+  app.get('/order', authMiddleware, cors(corsOptions), (req, res) => res.json(db.orders));
   app.all('*', (req, resp, nextAll) => nextAll(404));
   return next();
 };

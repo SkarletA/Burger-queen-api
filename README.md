@@ -398,13 +398,13 @@ entregada por nuestra clienta, la API debe exponer los siguientes endpoints:
 
 * `POST /auth`
 
-#### 5.1.3 `/users`
+#### 5.1.3 `/empleados`
 
-* `GET /users`
-* `GET /users/:uid`
-* `POST /users`
-* `PUT /users/:uid`
-* `DELETE /users/:uid`
+* `GET /empleados`
+* `GET /empleados/:uid`
+* `POST /empleados`
+* `PUT /empleados/:uid`
+* `DELETE /empleados/:uid`
 
 #### 5.1.4 `/products`
 
@@ -541,13 +541,13 @@ dudes en consultar con tus pares y tus coaches.
 
 * [ ] `POST /auth`
 
-### 7.3 `/users`
+### 7.3 `/empleados`
 
-* [ ] `GET /users`
-* [ ] `GET /users/:uid`
-* [ ] `POST /users`
-* [ ] `PUT /users/:uid`
-* [ ] `DELETE /users/:uid`
+* [ ] `GET /empleados`
+* [ ] `GET /empleados/:uid`
+* [ ] `POST /empleados`
+* [ ] `PUT /empleados/:uid`
+* [ ] `DELETE /empleados/:uid`
 
 ### 7.4 `/products`
 

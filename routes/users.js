@@ -8,6 +8,7 @@ const {
 const {
   getUsers,
 } = require('../controller/users');
+const res = require('express/lib/response');
 
 const initAdminUser = (app, next) => {
   const { adminEmail, adminPassword } = app.get('config');
@@ -53,9 +54,9 @@ const initAdminUser = (app, next) => {
 /** @module users */
 module.exports = (app, next) => {
   /**
-   * @name GET /users
+   * @name GET /empleados
    * @description Lista usuarias
-   * @path {GET} /users
+   * @path {GET} /empleados
    * @query {String} [page=1] Página del listado a consultar
    * @query {String} [limit=10] Cantitad de elementos por página
    * @header {Object} link Parámetros de paginación
@@ -73,12 +74,12 @@ module.exports = (app, next) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {403} si no es ni admin
    */
-  app.get('/users', requireAdmin, getUsers);
+  app.get('/empleados', requireAdmin, getUsers);
 
   /**
-   * @name GET /users/:uid
+   * @name GET /empleados/:uid
    * @description Obtiene información de una usuaria
-   * @path {GET} /users/:uid
+   * @path {GET} /empleados/:uid
    * @params {String} :uid `id` o `email` de la usuaria a consultar
    * @auth Requiere `token` de autenticación y que la usuaria sea **admin** o la usuaria a consultar
    * @response {Object} user
@@ -91,13 +92,13 @@ module.exports = (app, next) => {
    * @code {403} si no es ni admin o la misma usuaria
    * @code {404} si la usuaria solicitada no existe
    */
-  app.get('/users/:uid', requireAuth, (req, resp) => {
+  app.get('/empleados/:uid', requireAuth, (req, resp) => {
   });
 
   /**
-   * @name POST /users
+   * @name POST /empleados
    * @description Crea una usuaria
-   * @path {POST} /users
+   * @path {POST} /empleados
    * @body {String} email Correo
    * @body {String} password Contraseña
    * @body {Object} [roles]
@@ -113,14 +114,15 @@ module.exports = (app, next) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {403} si ya existe usuaria con ese `email`
    */
-  app.post('/users', requireAdmin, (req, resp, next) => {
+  app.post('/empleados', requireAdmin, (req, resp, next) => {
+    resp.send('create database');
   });
 
   /**
-   * @name PUT /users
+   * @name PUT /empleados
    * @description Modifica una usuaria
    * @params {String} :uid `id` o `email` de la usuaria a modificar
-   * @path {PUT} /users
+   * @path {PUT} /empleados
    * @body {String} email Correo
    * @body {String} password Contraseña
    * @body {Object} [roles]
@@ -138,14 +140,14 @@ module.exports = (app, next) => {
    * @code {403} una usuaria no admin intenta de modificar sus `roles`
    * @code {404} si la usuaria solicitada no existe
    */
-  app.put('/users/:uid', requireAuth, (req, resp, next) => {
+  app.put('/empleados/:uid', requireAuth, (req, resp, next) => {
   });
 
   /**
-   * @name DELETE /users
+   * @name DELETE /empleados
    * @description Elimina una usuaria
    * @params {String} :uid `id` o `email` de la usuaria a modificar
-   * @path {DELETE} /users
+   * @path {DELETE} /empleados
    * @auth Requiere `token` de autenticación y que la usuaria sea **admin** o la usuaria a eliminar
    * @response {Object} user
    * @response {String} user._id
@@ -157,7 +159,7 @@ module.exports = (app, next) => {
    * @code {403} si no es ni admin o la misma usuaria
    * @code {404} si la usuaria solicitada no existe
    */
-  app.delete('/users/:uid', requireAuth, (req, resp, next) => {
+  app.delete('/empleados/:uid', requireAuth, (req, resp, next) => {
   });
 
   initAdminUser(app, next);
