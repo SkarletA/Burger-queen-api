@@ -4,6 +4,8 @@ const users = require('./users');
 const products = require('./products');
 const orders = require('./orders');
 const { db } = require('../db');
+const authMiddleware = require('../middleware/auth');
+// const { validateToken } = require('../middleware/auth');
 
 const root = (app, next) => {
   const pkg = app.get('pkg');
@@ -14,10 +16,11 @@ const root = (app, next) => {
     optionSucessStatus: 200,
   };
   app.get('/', cors(corsOptions), (req, res) => res.json({ name: pkg.name, version: pkg.version }));
-  app.get('/empleados', cors(corsOptions), (req, res) => res.json(db.empleados));
-  app.get('/menu', (req, res) => res.json(db.menu));
-  app.get('/menuLunch', (req, res) => res.json(db.menuLunch));
-  app.get('/order', (req, res) => res.json(db.orders));
+  app.get('/auth', cors(corsOptions), (req, res) => res.json(db.auth));
+  app.get('/empleados', cors(corsOptions), authMiddleware, (req, res) => res.json(db.empleados));
+  app.get('/menu', cors(corsOptions), authMiddleware, (req, res) => res.json(db.menu));
+  app.get('/menuLunch', cors(corsOptions), authMiddleware, (req, res) => res.json(db.menuLunch));
+  app.get('/order', cors(corsOptions), authMiddleware, (req, res) => res.json(db.orders));
   app.all('*', (req, resp, nextAll) => nextAll(404));
   return next();
 };

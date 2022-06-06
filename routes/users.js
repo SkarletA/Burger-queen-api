@@ -12,7 +12,7 @@ const {
 const initAdminUser = (app, next) => {
   const { adminEmail, adminPassword } = app.get('config');
   if (!adminEmail || !adminPassword) {
-    return next();
+    return next(403);
   }
 
   const adminUser = {
@@ -21,7 +21,6 @@ const initAdminUser = (app, next) => {
     roles: { admin: true },
   };
 
-  // TODO: crear usuaria admin
   next();
 };
 
