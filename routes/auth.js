@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config');
 
-const { secret } = config;
+const { secret, adminEmail, adminPassword } = config;
 
 /** @module auth */
 module.exports = (app, nextMain) => {
@@ -18,14 +18,30 @@ module.exports = (app, nextMain) => {
    * @auth No requiere autenticación
    */
   app.post('/auth', (req, resp, next) => {
-    const { email, password } = req.body;
+    // const { email, password } = req.body;
+    const email = '';
+    const password = '';
 
     if (!email || !password) {
       return next(400);
     }
 
     // TODO: autenticar a la usuarix
-    next();
+    const userEmail = { email };
+    console.info(userEmail);
+
+    function generateAccessToken(userEmail) {
+      return jwt.sign(userEmail, secret, { expiresIn: '120m' });
+    }
+    const accessToken = generateAccessToken(userEmail);
+
+    resp.header('authorization', accessToken).json({
+      message: 'si la autenticación es correcta',
+      token: accessToken,
+    });
+
+    console.info(accessToken);
+    next(200);
   });
 
   return nextMain();

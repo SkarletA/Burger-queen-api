@@ -1,5 +1,5 @@
 const db = {
-  empleados: [
+  empleado: [
     {
       role: 'Admin',
       name: 'Maggie',

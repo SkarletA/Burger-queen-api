@@ -52,7 +52,7 @@ const fetchWithAuth = (token) => (url, opts = {}) => fetch(url, {
 const fetchAsAdmin = (url, opts) => fetchWithAuth(__e2e.adminToken)(url, opts);
 const fetchAsTestUser = (url, opts) => fetchWithAuth(__e2e.testUserToken)(url, opts);
 
-const createTestUser = () => fetchAsAdmin('/users', {
+const createTestUser = () => fetchAsAdmin('/empleados', {
   method: 'POST',
   body: __e2e.testUserCredentials,
 })
