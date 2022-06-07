@@ -1,4 +1,7 @@
 const jwt = require('jsonwebtoken');
+const config = require('../config');
+
+const { adminEmail, adminRole } = config;
 
 module.exports = (secret) => (req, resp, next) => {
   const { authorization } = req.headers;
@@ -23,20 +26,20 @@ module.exports = (secret) => (req, resp, next) => {
   });
 };
 
-module.exports.isAuthenticated = (req) => (
-  // TODO: decidir por la informacion del request si la usuaria esta autenticada
-  false
-);
+module.exports.isAuthenticated = (req) => {
+  console.info(req.decodedToken.email === adminEmail);
+  return req.decodedToken.email === adminEmail;
+};
 
-module.exports.isAdmin = (req) => (
-  // TODO: decidir por la informacion del request si la usuaria es admin
-  false
-);
+module.exports.isAdmin = (req) => {
+  console.info(req.decodedToken.role === adminRole);
+  return req.decodedToken.role === adminRole;
+};
 
 module.exports.requireAuth = (req, resp, next) => (
   (!module.exports.isAuthenticated(req))
     ? next(401)
-    : next()
+    : resp.send('aqui estoy en auth')
 );
 
 module.exports.requireAdmin = (req, resp, next) => (
@@ -45,5 +48,5 @@ module.exports.requireAdmin = (req, resp, next) => (
     ? next(401)
     : (!module.exports.isAdmin(req))
       ? next(403)
-      : next()
+      : resp.send('aqui estoy en authAdmind')
 );

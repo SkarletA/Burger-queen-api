@@ -19,7 +19,7 @@ const root = (app, next) => {
   // app.get('/auth', cors(corsOptions), (req, res) => res.json(db.auth));
   app.get('/empleado', cors(corsOptions), (req, res) => res.json(db.empleado));
   app.get('/menu', cors(corsOptions), (req, res) => res.json(db.menu));
-  app.get('/menuLunch', cors(corsOptions), (req, res) => res.json(db.menuLunch));
+  app.get('/menuLunch', authMiddleware, cors(corsOptions), (req, res) => res.json(db.menuLunch));
   app.get('/order', authMiddleware, cors(corsOptions), (req, res) => res.json(db.orders));
   app.all('*', (req, resp, nextAll) => nextAll(404));
   // const test = app._router.stack.filter((r) => r.route)

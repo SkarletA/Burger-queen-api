@@ -1,3 +1,3 @@
 ### 
-GET http://localhost:8080/menu HTTP/1.1
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsImlhdCI6MTY1NDU1Mzc1MCwiZXhwIjoxNjU0NTYwOTUwfQ.N77SUqoYl_hE2qf762uxOuBmEHtpMT2ak7zTjdBlFEo
+GET http://localhost:8080/empleados/1 HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDYxMzM3MiwiZXhwIjoxNjU0NjIwNTcyfQ.C9jUUYSwFYk8oni-wJ1y2m3sELMRfls2z4rLsCaHBUA
