@@ -19,28 +19,29 @@ module.exports = (app, nextMain) => {
    */
   app.post('/auth', (req, resp, next) => {
     // const { email, password } = req.body;
-    const email = '';
-    const password = '';
+    const email = adminEmail;
+    const password = adminPassword;
 
     if (!email || !password) {
       return next(400);
     }
 
     // TODO: autenticar a la usuarix
-    const userEmail = { email };
-    console.info(userEmail);
+    const user = {
+      email,
+      role: 'admin',
+    };
 
-    function generateAccessToken(userEmail) {
-      return jwt.sign(userEmail, secret, { expiresIn: '120m' });
+    function generateAccessToken(user) {
+      return jwt.sign(user, secret, { expiresIn: '120m' });
     }
-    const accessToken = generateAccessToken(userEmail);
+    const accessToken = generateAccessToken(user);
 
     resp.header('authorization', accessToken).json({
       message: 'si la autenticación es correcta',
       token: accessToken,
     });
 
-    console.info(accessToken);
     next(200);
   });
 
