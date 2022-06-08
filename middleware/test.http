@@ -1,6 +1,10 @@
-### Generar token
+### Create token
+POST http://localhost:8080/auth HTTP/1.1
+Content-Type: application/json
+
+### Create staff
 POST http://localhost:8080/staffs HTTP/1.1
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDY0ODY1MCwiZXhwIjoxNjU0NjU1ODUwfQ.zhR1uZ_Mw88adT1WALiiKC8zKHHHZviI8bH4lc89Yo4
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcxMjc3MSwiZXhwIjoxNjU0NzE5OTcxfQ.lzSHi9T0DdtNGLAOVNf1TDLdw5y5-j984yfpMwFcA2E
 Content-Type: application/json
 
 {
@@ -8,26 +12,26 @@ Content-Type: application/json
   "name": "Damian",
   "lastname": "Sala",
   "email": "damian@gmail.com",
-  "date": "2022-06-07",
+  "date": "2022-06-08",
   "id": 10
 }
 
-
-### Crear usuario
-POST http://localhost:8080/staffs HTTP/1.1
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDY0ODY1MCwiZXhwIjoxNjU0NjU1ODUwfQ.zhR1uZ_Mw88adT1WALiiKC8zKHHHZviI8bH4lc89Yo4
-Content-Type: application/json
-
-{
-  "role": "Mesero",
-  "name": "Damian",
-  "lastname": "Sala",
-  "email": "damian@gmail.com",
-  "date": "2022-06-07",
-  "id": 10
-}
-
-### Pintar data
+### Get staff
 GET http://localhost:8080/staffs HTTP/1.1
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDY0ODY1MCwiZXhwIjoxNjU0NjU1ODUwfQ.zhR1uZ_Mw88adT1WALiiKC8zKHHHZviI8bH4lc89Yo4
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcxMjc3MSwiZXhwIjoxNjU0NzE5OTcxfQ.lzSHi9T0DdtNGLAOVNf1TDLdw5y5-j984yfpMwFcA2E
+Content-Type: application/json
+
+
+### Edit Staff
+PUT http://localhost:8080/staffs/62a0c5259821c2c879afb20e HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcxMjc3MSwiZXhwIjoxNjU0NzE5OTcxfQ.lzSHi9T0DdtNGLAOVNf1TDLdw5y5-j984yfpMwFcA2E
+Content-Type: application/json
+
+{
+  "lastname": "Salamanca"
+}
+
+### Delete Staff
+DELETE http://localhost:8080/staffs/62a0c5259821c2c879afb20e HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcxMjc3MSwiZXhwIjoxNjU0NzE5OTcxfQ.lzSHi9T0DdtNGLAOVNf1TDLdw5y5-j984yfpMwFcA2E
 Content-Type: application/json

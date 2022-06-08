@@ -22,11 +22,15 @@ module.exports = (app, nextMain) => {
     const email = adminEmail;
     const password = adminPassword;
 
+    // buscar en base de datos si hay registro retornar token 200
+    // si no hay registro retornar no encontrado 400
+
     if (!email || !password) {
       return next(400);
     }
 
     // TODO: autenticar a la usuarix
+    // guardar role de la base de datos
     const user = {
       email,
       role: 'Admin',
