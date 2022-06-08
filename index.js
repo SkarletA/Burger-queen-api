@@ -5,6 +5,10 @@ const authMiddleware = require('./middleware/auth');
 const errorHandler = require('./middleware/error');
 const routes = require('./routes');
 const pkg = require('./package.json');
+const staffRoutes = require('./routes/staff');
+const menuRoutes = require('./routes/menu');
+const menuLunchRoutes = require('./routes/menuLunch');
+const orderRoutes = require('./routes/orders');
 
 const {
   port, dbUrl, secret, dbMongo,
@@ -22,6 +26,10 @@ app.set('config', config);
 app.set('pkg', pkg);
 
 // parse application/x-www-form-urlencoded
+app.use('/home', staffRoutes);
+app.use('/home', menuRoutes);
+app.use('/home', menuLunchRoutes);
+app.use('/home', orderRoutes);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(authMiddleware(secret));

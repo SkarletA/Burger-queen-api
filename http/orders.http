@@ -1,6 +1,6 @@
 ### Create token
 POST http://localhost:8080/auth HTTP/1.1
-Content-Type: application/json
+Content-Type: application/json 
 
 ### Get data orders
 GET http://localhost:8080/orders HTTP/1.1
