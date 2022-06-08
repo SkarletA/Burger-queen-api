@@ -13,8 +13,8 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2Fs
 Content-Type: application/json
 
 {
-  "client": "Maggie",
-  "table": "9",
+  "client": "Lazaro",
+  "table": "10",
   "total": "22.00",
   "status": "delivered",
   "hours": "11:27:53",
@@ -37,20 +37,20 @@ Content-Type: application/json
       "image": "https://ae01.alicdn.com/kf/H1c2054b527494e9faee9a11dfd37572bi.jpg"
     }
   ],
-  "id": 3
+  "id": 9
 }
 
 ### Edit orders
-PUT http://localhost:8080/orders/62a10deb6aa3dd1efb270240 HTTP/1.1
+PUT http://localhost:8080/orders/62a11c14bdab3f3e7f6744b4 HTTP/1.1
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcyMDg1MCwiZXhwIjoxNjU0NzI4MDUwfQ.0Du2PEEi3iLcD5sFjf6zZ1Qc0xkZ3N_727uF-TvwCwE
 Content-Type: application/json
 
 {
-  "popularity": 4
+  "status": "ready"
 }
 
 ### Delete orders
-DELETE http://localhost:8080/orders/62a10deb6aa3dd1efb270240 HTTP/1.1
+DELETE http://localhost:8080/orders/62a11c14bdab3f3e7f6744b4 HTTP/1.1
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcyMDg1MCwiZXhwIjoxNjU0NzI4MDUwfQ.0Du2PEEi3iLcD5sFjf6zZ1Qc0xkZ3N_727uF-TvwCwE
 Content-Type: application/json 
 

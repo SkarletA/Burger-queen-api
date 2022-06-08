@@ -2,6 +2,8 @@ const {
   requireAuth,
 } = require('../middleware/auth');
 
+const orderSchema = require('../models/orderSch');
+
 /** @module orders */
 module.exports = (app, nextMain) => {
   /**
@@ -31,6 +33,10 @@ module.exports = (app, nextMain) => {
    * @code {401} si no hay cabecera de autenticación
    */
   app.get('/orders', requireAuth, (req, resp, next) => {
+    orderSchema
+      .find()
+      .then((data) => resp.json(data))
+      .catch((error) => resp.json({ message: error }));
   });
 
   /**
@@ -55,6 +61,11 @@ module.exports = (app, nextMain) => {
    * @code {404} si la orden con `orderId` indicado no existe
    */
   app.get('/orders/:orderId', requireAuth, (req, resp, next) => {
+    const { orderId } = req.params;
+    orderSchema
+      .findById(orderId)
+      .then((data) => resp.json(data))
+      .catch((error) => resp.json({ message: error }));
   });
 
   /**
@@ -84,6 +95,11 @@ module.exports = (app, nextMain) => {
    * @code {401} si no hay cabecera de autenticación
    */
   app.post('/orders', requireAuth, (req, resp, next) => {
+    const order = orderSchema(req.body);
+    order
+      .save()
+      .then((data) => resp.json(data))
+      .catch((error) => resp.json({ message: error }));
   });
 
   /**
@@ -115,12 +131,44 @@ module.exports = (app, nextMain) => {
    * @code {404} si la orderId con `orderId` indicado no existe
    */
   app.put('/orders/:orderId', requireAuth, (req, resp, next) => {
+    const { orderId } = req.params;
+    const {
+      client,
+      table,
+      total,
+      status,
+      hours,
+      startTime,
+      endTime,
+      totalTime,
+    } = req.body;
+
+    orderSchema
+      .updateOne({ _id: orderId }, {
+        $set: {
+          client,
+          table,
+          total,
+          status,
+          hours,
+          startTime,
+          endTime,
+          totalTime,
+        },
+      })
+      .then((data) => resp.json(data))
+      .catch((error) => resp.json({ message: error }));
   });
 
   /**
    * @name DELETE /orders
    * @description Elimina una orden
    * @path {DELETE} /orders
+    const { orderId } = req.params;
+    orderSchema
+      .remove({ _id: menuId })
+      .then((data) => resp.json(data))
+      .catch((error) => resp.json({ message: error }));
    * @params {String} :orderId `id` del producto
    * @auth Requiere `token` de autenticación
    * @response {Object} order
@@ -139,6 +187,11 @@ module.exports = (app, nextMain) => {
    * @code {404} si el producto con `orderId` indicado no existe
    */
   app.delete('/orders/:orderId', requireAuth, (req, resp, next) => {
+    const { orderId } = req.params;
+    orderSchema
+      .remove({ _id: orderId })
+      .then((data) => resp.json(data))
+      .catch((error) => resp.json({ message: error }));
   });
 
   nextMain();

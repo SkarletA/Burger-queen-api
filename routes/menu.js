@@ -120,13 +120,13 @@ module.exports = (app, nextMain) => {
       name, price, popularity, image,
     } = req.body;
     menuSchema
-    .updateOne({ _id: menuId }, {
-      $set: {
-        name, price, popularity, image,
-      },
-    })
-    .then((data) => resp.json(data))
-    .catch((error) => resp.json({ message: error }));
+      .updateOne({ _id: menuId }, {
+        $set: {
+          name, price, popularity, image,
+        },
+      })
+      .then((data) => resp.json(data))
+      .catch((error) => resp.json({ message: error }));
   });
 
   /**
