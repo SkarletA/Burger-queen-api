@@ -29,7 +29,7 @@ module.exports = (app, nextMain) => {
     // TODO: autenticar a la usuarix
     const user = {
       email,
-      role: 'admin',
+      role: 'Admin',
     };
 
     function generateAccessToken(user) {
