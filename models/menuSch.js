@@ -23,5 +23,7 @@ const menuSchema = new mongoose.Schema({
   },
 });
 
+// menuSchema.query.byRole = (name) => this.where({ name: new RegExp(name, 'i') });
+
 const menu = mongoose.model('menu', menuSchema);
 module.exports = menu;

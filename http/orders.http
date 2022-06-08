@@ -1,0 +1,56 @@
+### Create token
+POST http://localhost:8080/auth HTTP/1.1
+Content-Type: application/json
+
+### Get data orders
+GET http://localhost:8080/orders HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcyMDg1MCwiZXhwIjoxNjU0NzI4MDUwfQ.0Du2PEEi3iLcD5sFjf6zZ1Qc0xkZ3N_727uF-TvwCwE
+Content-Type: application/json
+
+### Create orders
+POST http://localhost:8080/orders HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcyMDg1MCwiZXhwIjoxNjU0NzI4MDUwfQ.0Du2PEEi3iLcD5sFjf6zZ1Qc0xkZ3N_727uF-TvwCwE
+Content-Type: application/json
+
+{
+  "client": "Maggie",
+  "table": "9",
+  "total": "22.00",
+  "status": "delivered",
+  "hours": "11:27:53",
+  "startTime": 1653323273796,
+  "endTime": 1653324513486,
+  "totalTime": 21,
+  "products": [
+    {
+      "name": "Sandwich",
+      "price": 15,
+      "popularity": 4.8,
+      "image": "https://eggs.org.nz/wp-content/uploads/2021/12/Club-Sandwiches-500x500.jpg",
+      "id": 4
+    },
+    {
+      "id": 2,
+      "name": "Cafe",
+      "price": 7,
+      "popularity": 5,
+      "image": "https://ae01.alicdn.com/kf/H1c2054b527494e9faee9a11dfd37572bi.jpg"
+    }
+  ],
+  "id": 3
+}
+
+### Edit orders
+PUT http://localhost:8080/orders/62a10deb6aa3dd1efb270240 HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcyMDg1MCwiZXhwIjoxNjU0NzI4MDUwfQ.0Du2PEEi3iLcD5sFjf6zZ1Qc0xkZ3N_727uF-TvwCwE
+Content-Type: application/json
+
+{
+  "popularity": 4
+}
+
+### Delete orders
+DELETE http://localhost:8080/orders/62a10deb6aa3dd1efb270240 HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcyMDg1MCwiZXhwIjoxNjU0NzI4MDUwfQ.0Du2PEEi3iLcD5sFjf6zZ1Qc0xkZ3N_727uF-TvwCwE
+Content-Type: application/json 
+

@@ -16,9 +16,9 @@ Content-Type: application/json
   "id": 10
 }
 
-### Get staff
+### Get data staff
 GET http://localhost:8080/staffs HTTP/1.1
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcxMjc3MSwiZXhwIjoxNjU0NzE5OTcxfQ.lzSHi9T0DdtNGLAOVNf1TDLdw5y5-j984yfpMwFcA2E
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcyMDg1MCwiZXhwIjoxNjU0NzI4MDUwfQ.0Du2PEEi3iLcD5sFjf6zZ1Qc0xkZ3N_727uF-TvwCwE
 Content-Type: application/json
 
 
@@ -32,6 +32,7 @@ Content-Type: application/json
 }
 
 ### Delete Staff
-DELETE http://localhost:8080/staffs/62a0c5259821c2c879afb20e HTTP/1.1
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcxMjc3MSwiZXhwIjoxNjU0NzE5OTcxfQ.lzSHi9T0DdtNGLAOVNf1TDLdw5y5-j984yfpMwFcA2E
-Content-Type: application/json
+DELETE http://localhost:8080/staffs/62a0bc76eb045d618521a66b HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcyMDg1MCwiZXhwIjoxNjU0NzI4MDUwfQ.0Du2PEEi3iLcD5sFjf6zZ1Qc0xkZ3N_727uF-TvwCwE
+Content-Type: application/json 
+

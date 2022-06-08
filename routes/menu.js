@@ -3,12 +3,14 @@ const {
   requireAdmin,
 } = require('../middleware/auth');
 
+const menuSchema = require('../models/menuSch');
+
 /** @module products */
 module.exports = (app, nextMain) => {
   /**
-   * @name GET /products
+   * @name GET /menu
    * @description Lista productos
-   * @path {GET} /products
+   * @path {GET} /menu
    * @query {String} [page=1] Página del listado a consultar
    * @query {String} [limit=10] Cantitad de elementos por página
    * @header {Object} link Parámetros de paginación
@@ -27,14 +29,18 @@ module.exports = (app, nextMain) => {
    * @code {200} si la autenticación es correcta
    * @code {401} si no hay cabecera de autenticación
    */
-  app.get('/products', requireAuth, (req, resp, next) => {
+  app.get('/menu', requireAuth, (req, resp, next) => {
+    menuSchema
+      .find()
+      .then((data) => resp.json(data))
+      .catch((error) => resp.json({ message: error }));
   });
 
   /**
-   * @name GET /products/:productId
+   * @name GET /menu/:menuId
    * @description Obtiene los datos de un producto especifico
-   * @path {GET} /products/:productId
-   * @params {String} :productId `id` del producto
+   * @path {GET} /menu/:menuId
+   * @params {String} :menuId `id` del producto
    * @auth Requiere `token` de autenticación
    * @response {Object} product
    * @response {String} product._id Id
@@ -45,15 +51,20 @@ module.exports = (app, nextMain) => {
    * @response {Date} product.dateEntry Fecha de creación
    * @code {200} si la autenticación es correcta
    * @code {401} si no hay cabecera de autenticación
-   * @code {404} si el producto con `productId` indicado no existe
+   * @code {404} si el producto con `menuId` indicado no existe
    */
-  app.get('/products/:productId', requireAuth, (req, resp, next) => {
+  app.get('/menu/:menuId', requireAuth, (req, resp, next) => {
+    const { menuId } = req.params;
+    menuSchema
+      .findById(menuId)
+      .then((data) => resp.json(data))
+      .catch((error) => resp.json({ message: error }));
   });
 
   /**
-   * @name POST /products
+   * @name POST /menu
    * @description Crea un nuevo producto
-   * @path {POST} /products
+   * @path {POST} /menu
    * @auth Requiere `token` de autenticación y que la usuaria sea **admin**
    * @body {String} name Nombre
    * @body {Number} price Precio
@@ -70,16 +81,21 @@ module.exports = (app, nextMain) => {
    * @code {400} si no se indican `name` o `price`
    * @code {401} si no hay cabecera de autenticación
    * @code {403} si no es admin
-   * @code {404} si el producto con `productId` indicado no existe
+   * @code {404} si el producto con `menuId` indicado no existe
    */
-  app.post('/products', requireAdmin, (req, resp, next) => {
+  app.post('/menu', requireAdmin, (req, resp, next) => {
+    const menu = menuSchema(req.body);
+    menu
+      .save()
+      .then((data) => resp.json(data))
+      .catch((error) => resp.json({ message: error }));
   });
 
   /**
-   * @name PUT /products
+   * @name PUT /menu
    * @description Modifica un producto
-   * @path {PUT} /products
-   * @params {String} :productId `id` del producto
+   * @path {PUT} /menu
+   * @params {String} :menuId `id` del producto
    * @auth Requiere `token` de autenticación y que el usuario sea **admin**
    * @body {String} [name] Nombre
    * @body {Number} [price] Precio
@@ -96,16 +112,28 @@ module.exports = (app, nextMain) => {
    * @code {400} si no se indican ninguna propiedad a modificar
    * @code {401} si no hay cabecera de autenticación
    * @code {403} si no es admin
-   * @code {404} si el producto con `productId` indicado no existe
+   * @code {404} si el producto con `menuId` indicado no existe
    */
-  app.put('/products/:productId', requireAdmin, (req, resp, next) => {
+  app.put('/menu/:menuId', requireAdmin, (req, resp, next) => {
+    const { menuId } = req.params;
+    const {
+      name, price, popularity, image,
+    } = req.body;
+    menuSchema
+    .updateOne({ _id: menuId }, {
+      $set: {
+        name, price, popularity, image,
+      },
+    })
+    .then((data) => resp.json(data))
+    .catch((error) => resp.json({ message: error }));
   });
 
   /**
-   * @name DELETE /products
+   * @name DELETE /menu
    * @description Elimina un producto
-   * @path {DELETE} /products
-   * @params {String} :productId `id` del producto
+   * @path {DELETE} /menu
+   * @params {String} :menuId `id` del producto
    * @auth Requiere `token` de autenticación y que el usuario sea **admin**
    * @response {Object} product
    * @response {String} product._id Id
@@ -117,9 +145,14 @@ module.exports = (app, nextMain) => {
    * @code {200} si la autenticación es correcta
    * @code {401} si no hay cabecera de autenticación
    * @code {403} si no es ni admin
-   * @code {404} si el producto con `productId` indicado no existe
+   * @code {404} si el producto con `menuId` indicado no existe
    */
-  app.delete('/products/:productId', requireAdmin, (req, resp, next) => {
+  app.delete('/menu/:menuId', requireAdmin, (req, resp, next) => {
+    const { menuId } = req.params;
+    menuSchema
+      .remove({ _id: menuId })
+      .then((data) => resp.json(data))
+      .catch((error) => resp.json({ message: error }));
   });
 
   nextMain();
