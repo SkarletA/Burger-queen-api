@@ -1,0 +1,36 @@
+### Create token
+POST http://localhost:8080/auth HTTP/1.1
+Content-Type: application/json
+
+### Get data menu
+GET http://localhost:8080/menu HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcyMDg1MCwiZXhwIjoxNjU0NzI4MDUwfQ.0Du2PEEi3iLcD5sFjf6zZ1Qc0xkZ3N_727uF-TvwCwE
+Content-Type: application/json
+
+### Create menu
+POST http://localhost:8080/menu HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcyMDg1MCwiZXhwIjoxNjU0NzI4MDUwfQ.0Du2PEEi3iLcD5sFjf6zZ1Qc0xkZ3N_727uF-TvwCwE
+Content-Type: application/json
+
+{
+  "name": "Cafe con mocka",
+  "price": 10,
+  "popularity": 3,
+  "image": "https://cdn.shopify.com/s/files/1/0438/4479/6573/products/Latte-moka-caliente-12oz-_354ml_-01.jpg?v=1601056479",
+  "id": 5
+}
+
+### Edit menu
+PUT http://localhost:8080/menu/62a10deb6aa3dd1efb270240 HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcyMDg1MCwiZXhwIjoxNjU0NzI4MDUwfQ.0Du2PEEi3iLcD5sFjf6zZ1Qc0xkZ3N_727uF-TvwCwE
+Content-Type: application/json
+
+{
+  "popularity": 4
+}
+
+### Delete menu
+DELETE http://localhost:8080/menu/62a10deb6aa3dd1efb270240 HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcyMDg1MCwiZXhwIjoxNjU0NzI4MDUwfQ.0Du2PEEi3iLcD5sFjf6zZ1Qc0xkZ3N_727uF-TvwCwE
+Content-Type: application/json 
+

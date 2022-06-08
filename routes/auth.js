@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config');
 
-const { secret, adminEmail, adminPassword } = config;
+const { secret } = config;
 
 /** @module auth */
 module.exports = (app, nextMain) => {
@@ -18,9 +18,7 @@ module.exports = (app, nextMain) => {
    * @auth No requiere autenticación
    */
   app.post('/auth', (req, resp, next) => {
-    // const { email, password } = req.body;
-    const email = adminEmail;
-    const password = adminPassword;
+    const { email, password } = req.body;
 
     // buscar en base de datos si hay registro retornar token 200
     // si no hay registro retornar no encontrado 400

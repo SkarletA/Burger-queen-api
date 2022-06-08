@@ -1,7 +1,8 @@
 const cors = require('cors');
 const auth = require('./auth');
-const users = require('./users');
-const products = require('./products');
+const staff = require('./staff');
+const menu = require('./menu');
+const menuLunch = require('./menuLunch');
 const orders = require('./orders');
 const { db } = require('../db');
 const authMiddleware = require('../middleware/auth');
@@ -44,8 +45,9 @@ const register = (app, routes, cb) => {
 
 module.exports = (app, next) => register(app, [
   auth,
-  users,
-  products,
+  staff,
+  menu,
+  menuLunch,
   orders,
   root,
 ], next);

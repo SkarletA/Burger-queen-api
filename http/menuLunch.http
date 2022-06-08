@@ -1,0 +1,36 @@
+### Create token
+POST http://localhost:8080/auth HTTP/1.1
+Content-Type: application/json
+
+### Get data menuLunch
+GET http://localhost:8080/menuLunch HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcyMDg1MCwiZXhwIjoxNjU0NzI4MDUwfQ.0Du2PEEi3iLcD5sFjf6zZ1Qc0xkZ3N_727uF-TvwCwE
+Content-Type: application/json
+
+### Create menuLunch
+POST http://localhost:8080/menuLunch HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcyMDg1MCwiZXhwIjoxNjU0NzI4MDUwfQ.0Du2PEEi3iLcD5sFjf6zZ1Qc0xkZ3N_727uF-TvwCwE
+Content-Type: application/json
+
+{
+  "name": "Hamburguesa con tocino",
+  "price": 15,
+  "popularity": 5,
+  "image": "https://cdn.shopify.com/s/files/1/0438/4479/6573/products/Latte-moka-caliente-12oz-_354ml_-01.jpg?v=1601056479",
+  "id": 9
+}
+
+### Edit menuLunch
+PUT http://localhost:8080/menuLunch/62a110b892131c3f8670a785 HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcyMDg1MCwiZXhwIjoxNjU0NzI4MDUwfQ.0Du2PEEi3iLcD5sFjf6zZ1Qc0xkZ3N_727uF-TvwCwE
+Content-Type: application/json
+
+{
+  "popularity": 4
+}
+
+### Delete menuLunch
+DELETE http://localhost:8080/menuLunch/62a110b892131c3f8670a785 HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcyMDg1MCwiZXhwIjoxNjU0NzI4MDUwfQ.0Du2PEEi3iLcD5sFjf6zZ1Qc0xkZ3N_727uF-TvwCwE
+Content-Type: application/json 
+
