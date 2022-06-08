@@ -39,7 +39,7 @@ module.exports.isAdmin = (req) => {
 module.exports.requireAuth = (req, resp, next) => (
   (!module.exports.isAuthenticated(req))
     ? next(401)
-    : resp.send('aqui estoy en auth')
+    : next()
 );
 
 module.exports.requireAdmin = (req, resp, next) => (
@@ -48,5 +48,5 @@ module.exports.requireAdmin = (req, resp, next) => (
     ? next(401)
     : (!module.exports.isAdmin(req))
       ? next(403)
-      : resp.send('aqui estoy en authAdmind')
+      : next()
 );

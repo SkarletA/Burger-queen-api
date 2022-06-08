@@ -27,5 +27,9 @@ const staffSchema = new mongoose.Schema({
   },
 });
 
+staffSchema.query.byRole = function(role) {
+  return this.where({ role: new RegExp(role, 'i') });
+};
+
 const staff = mongoose.model('staff', staffSchema);
 module.exports = staff;
