@@ -97,7 +97,11 @@ module.exports = (app, next) => {
    * @code {404} si la usuaria solicitada no existe
    */
   app.get('/staffs/:uid', requireAuth, (req, resp) => {
-    
+    const { uid } = req.params;
+    userSchema
+      .findById(uid)
+      .then((data) => resp.json(data))
+      .catch((error) => resp.json({ message: error }));
   });
 
   /**
@@ -120,6 +124,7 @@ module.exports = (app, next) => {
    * @code {403} si ya existe usuaria con ese `email`
    */
   app.post('/staffs', requireAdmin, (req, resp, next) => {
+    // decodificar token, si es admin permitir si no denegar
     console.info(req.body);
     const user = userSchema(req.body);
     user
@@ -151,6 +156,19 @@ module.exports = (app, next) => {
    * @code {404} si la usuaria solicitada no existe
    */
   app.put('/staffs/:uid', requireAuth, (req, resp, next) => {
+    const { uid } = req.params;
+    const {
+      role, name, lastname, email, date,
+    } = req.body;
+
+    userSchema
+      .updateOne({ _id: uid }, {
+        $set: {
+          role, name, lastname, email, date,
+        },
+      })
+      .then((data) => resp.json(data))
+      .catch((error) => resp.json({ message: error }));
   });
 
   /**
@@ -170,6 +188,11 @@ module.exports = (app, next) => {
    * @code {404} si la usuaria solicitada no existe
    */
   app.delete('/staffs/:uid', requireAuth, (req, resp, next) => {
+    const { uid } = req.params;
+    userSchema
+      .remove({ _id: uid })
+      .then((data) => resp.json(data))
+      .catch((error) => resp.json({ message: error }));
   });
 
   initAdminUser(app, next);
