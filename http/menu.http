@@ -4,12 +4,12 @@ Content-Type: application/json
 
 ### Get data menu
 GET http://localhost:8080/menu HTTP/1.1
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcyMDg1MCwiZXhwIjoxNjU0NzI4MDUwfQ.0Du2PEEi3iLcD5sFjf6zZ1Qc0xkZ3N_727uF-TvwCwE
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDgwNjQ3OSwiZXhwIjoxNjU0ODEzNjc5fQ.bZfJTFykeSkRbJeTBNqVvHZDnS1ondFIeP9XfryomuI
 Content-Type: application/json
 
 ### Create menu
 POST http://localhost:8080/menu HTTP/1.1
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcyMDg1MCwiZXhwIjoxNjU0NzI4MDUwfQ.0Du2PEEi3iLcD5sFjf6zZ1Qc0xkZ3N_727uF-TvwCwE
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDgwNjQ3OSwiZXhwIjoxNjU0ODEzNjc5fQ.bZfJTFykeSkRbJeTBNqVvHZDnS1ondFIeP9XfryomuI
 Content-Type: application/json
 
 {
@@ -22,7 +22,7 @@ Content-Type: application/json
 
 ### Edit menu
 PUT http://localhost:8080/menu/62a10deb6aa3dd1efb270240 HTTP/1.1
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcyMDg1MCwiZXhwIjoxNjU0NzI4MDUwfQ.0Du2PEEi3iLcD5sFjf6zZ1Qc0xkZ3N_727uF-TvwCwE
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDgwNjQ3OSwiZXhwIjoxNjU0ODEzNjc5fQ.bZfJTFykeSkRbJeTBNqVvHZDnS1ondFIeP9XfryomuI
 Content-Type: application/json
 
 {
@@ -31,6 +31,6 @@ Content-Type: application/json
 
 ### Delete menu
 DELETE http://localhost:8080/menu/62a10deb6aa3dd1efb270240 HTTP/1.1
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDcyMDg1MCwiZXhwIjoxNjU0NzI4MDUwfQ.0Du2PEEi3iLcD5sFjf6zZ1Qc0xkZ3N_727uF-TvwCwE
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTY1NDgwNjQ3OSwiZXhwIjoxNjU0ODEzNjc5fQ.bZfJTFykeSkRbJeTBNqVvHZDnS1ondFIeP9XfryomuI
 Content-Type: application/json 
 

@@ -1,3 +1,5 @@
+const express = require('express');
+const cors = require('cors');
 const {
   requireAuth,
   requireAdmin,
@@ -7,6 +9,13 @@ const menuSchema = require('../models/menuSch');
 
 /** @module products */
 module.exports = (app, nextMain) => {
+  app.use(express.json());
+  app.use(cors());
+
+  const corsOptions = {
+    origin: 'http://localhost:3000',
+    optionSucessStatus: 200,
+  };
   /**
    * @name GET /menu
    * @description Lista productos
@@ -29,7 +38,7 @@ module.exports = (app, nextMain) => {
    * @code {200} si la autenticación es correcta
    * @code {401} si no hay cabecera de autenticación
    */
-  app.get('/menu', requireAuth, (req, resp, next) => {
+  app.get('/menu', cors(corsOptions), requireAuth, (req, resp, next) => {
     menuSchema
       .find()
       .then((data) => resp.json(data))
@@ -53,7 +62,7 @@ module.exports = (app, nextMain) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {404} si el producto con `menuId` indicado no existe
    */
-  app.get('/menu/:menuId', requireAuth, (req, resp, next) => {
+  app.get('/menu/:menuId', cors(corsOptions), requireAuth, (req, resp, next) => {
     const { menuId } = req.params;
     menuSchema
       .findById(menuId)
