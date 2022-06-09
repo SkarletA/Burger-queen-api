@@ -1,10 +1,12 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config');
+const staffSchema = require('../models/staffSch');
 
-const { adminEmail, adminRole } = config;
+const { adminRole } = config;
 
 module.exports = (secret) => (req, resp, next) => {
-  const { authorization } = req.headers;
+  const { authorization } = req.headers || req.query.authorization;
+  console.info('estoy en auth routes routes', authorization);
   if (!authorization) {
     return next();
   }
@@ -26,14 +28,16 @@ module.exports = (secret) => (req, resp, next) => {
   });
 };
 
-module.exports.isAuthenticated = (req) => {
-  console.info(req.decodedToken.email === adminEmail);
-  return req.decodedToken.email === adminEmail;
+module.exports.isAuthenticated = async (req) => {
+  const user = await staffSchema.findOne({ email: req.decodedToken.email }).exec();
+  console.info('isAuthenticated', req.decodedToken.email === user.email);
+  return req.decodedToken.email === user.email;
 };
 
-module.exports.isAdmin = (req) => {
-  console.info(req.decodedToken.role === adminRole);
-  return req.decodedToken.role === adminRole;
+module.exports.isAdmin = async (req) => {
+  const user = await staffSchema.findOne({ email: req.decodedToken.email }).exec();
+  console.info('isAdmin', user.role === adminRole);
+  return user.role === adminRole;
 };
 
 module.exports.requireAuth = (req, resp, next) => (

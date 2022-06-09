@@ -1,5 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const cors = require('cors');
 const staffSchema = require('../models/staffSch');
 
 const {
@@ -57,6 +58,12 @@ const initAdminUser = (app, next) => {
 /** @module users */
 module.exports = (app, next) => {
   app.use(express.json());
+  app.use(cors());
+
+  const corsOptions = {
+    origin: 'http://localhost:3000',
+    optionSucessStatus: 200,
+  };
   /**
    * @name GET /staff
    * @description Lista usuarias
@@ -78,7 +85,7 @@ module.exports = (app, next) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {403} si no es ni admin
    */
-  app.get('/staffs', requireAdmin, getUsers);
+  app.get('/staffs', cors(corsOptions), requireAdmin, getUsers);
 
   /**
    * @name GET /staff/:uid
@@ -96,7 +103,7 @@ module.exports = (app, next) => {
    * @code {403} si no es ni admin o la misma usuaria
    * @code {404} si la usuaria solicitada no existe
    */
-  app.get('/staffs/:uid', requireAuth, (req, resp) => {
+  app.get('/staffs/:uid', cors(corsOptions), requireAuth, (req, resp) => {
     const { uid } = req.params;
     staffSchema
       .findById(uid)

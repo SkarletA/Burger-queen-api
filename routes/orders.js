@@ -1,3 +1,4 @@
+const cors = require('cors');
 const {
   requireAuth,
 } = require('../middleware/auth');
@@ -6,6 +7,12 @@ const orderSchema = require('../models/orderSch');
 
 /** @module orders */
 module.exports = (app, nextMain) => {
+  app.use(cors());
+
+  const corsOptions = {
+    origin: 'http://localhost:3000',
+    optionSucessStatus: 200,
+  };
   /**
    * @name GET /orders
    * @description Lista órdenes
@@ -32,7 +39,7 @@ module.exports = (app, nextMain) => {
    * @code {200} si la autenticación es correcta
    * @code {401} si no hay cabecera de autenticación
    */
-  app.get('/orders', requireAuth, (req, resp, next) => {
+  app.get('/orders', cors(corsOptions), requireAuth, (req, resp, next) => {
     orderSchema
       .find()
       .then((data) => resp.json(data))
@@ -60,7 +67,7 @@ module.exports = (app, nextMain) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {404} si la orden con `orderId` indicado no existe
    */
-  app.get('/orders/:orderId', requireAuth, (req, resp, next) => {
+  app.get('/orders/:orderId', cors(corsOptions), requireAuth, (req, resp, next) => {
     const { orderId } = req.params;
     orderSchema
       .findById(orderId)
