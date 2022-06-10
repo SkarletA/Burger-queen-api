@@ -37,11 +37,14 @@ module.exports = (app, nextMain) => {
    * @code {200} si la autenticación es correcta
    * @code {401} si no hay cabecera de autenticación
    */
-  app.get('/menuLunch', cors(corsOptions), requireAuth, (req, resp, next) => {
-    menuLunchSchema
-      .find()
-      .then((data) => resp.json(data))
-      .catch((error) => resp.json({ message: error }));
+  app.get('/menuLunch', cors(corsOptions), requireAuth, async (req, resp, next) => {
+    try {
+      const menu = await menuLunchSchema.find();
+      if (!menu) return next(404);
+      resp.status(200).json(menu);
+    } catch (error) {
+      return next(error);
+    }
   });
 
   /**
@@ -61,12 +64,16 @@ module.exports = (app, nextMain) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {404} si el producto con `productId` indicado no existe
    */
-  app.get('/menuLunch/:menuLunchId', cors(corsOptions), requireAuth, (req, resp, next) => {
-    const { menuLunchId } = req.params;
-    menuLunchSchema
-      .findById(menuLunchId)
-      .then((data) => resp.json(data))
-      .catch((error) => resp.json({ message: error }));
+  app.get('/menuLunch/:menuLunchId', cors(corsOptions), requireAuth, async (req, resp, next) => {
+    try {
+      const { menuId } = req.params;
+      const menuLunch = await menuLunchSchema.findById(menuId);
+      if (!menuLunch) return next(404);
+
+      resp.status(200).json(menuLunch);
+    } catch (error) {
+      return next(error);
+    }
   });
 
   /**
@@ -91,12 +98,18 @@ module.exports = (app, nextMain) => {
    * @code {403} si no es admin
    * @code {404} si el producto con `productId` indicado no existe
    */
-  app.post('/menuLunch', requireAdmin, (req, resp, next) => {
-    const menuLunch = menuLunchSchema(req.body);
-    menuLunch
-      .save()
-      .then((data) => resp.json(data))
-      .catch((error) => resp.json({ message: error }));
+  app.post('/menuLunch', requireAdmin, async (req, resp, next) => {
+    try {
+      const menuLunch = menuLunchSchema(req.body);
+      const dbMenuLunch = await menuLunchSchema.findOne({ name: menuLunch.name }).exec();
+      if (dbMenuLunch) return next(403);
+      const menuSave = await menuLunch.save();
+      if (!menuSave) return next(404);
+
+      resp.status(200).json(menuLunch);
+    } catch (error) {
+      return next(error);
+    }
   });
 
   /**
@@ -122,19 +135,24 @@ module.exports = (app, nextMain) => {
    * @code {403} si no es admin
    * @code {404} si el producto con `productId` indicado no existe
    */
-  app.put('/menuLunch/:menuLunchId', requireAdmin, (req, resp, next) => {
-    const { menuLunchId } = req.params;
-    const {
-      name, price, popularity, image,
-    } = req.body;
-    menuLunchSchema
-      .updateOne({ _id: menuLunchId }, {
-        $set: {
-          name, price, popularity, image,
-        },
-      })
-      .then((data) => resp.json(data))
-      .catch((error) => resp.json({ message: error }));
+  app.put('/menuLunch/:menuLunchId', requireAdmin, async (req, resp, next) => {
+    try {
+      const { menuLunchId } = req.params;
+      const {
+        name, price, popularity, image,
+      } = req.body;
+
+      const menuLunch = await menuLunchSchema
+        .updateOne({ _id: menuLunchId }, {
+          $set: {
+            name, price, popularity, image,
+          },
+        });
+      if (menuLunch.modifiedCount === 0) return next(404);
+      resp.status(200).json(menuLunch);
+    } catch (error) {
+      return next(error);
+    }
   });
 
   /**
@@ -155,13 +173,15 @@ module.exports = (app, nextMain) => {
    * @code {403} si no es ni admin
    * @code {404} si el producto con `productId` indicado no existe
    */
-  app.delete('/menuLunch/:menuLunchId', requireAdmin, (req, resp, next) => {
-    const { menuLunchId } = req.params;
-    menuLunchSchema
-      .remove({ _id: menuLunchId })
-      .then((data) => resp.json(data))
-      .catch((error) => resp.json({ message: error }));
+  app.delete('/menuLunch/:menuLunchId', requireAdmin, async (req, resp, next) => {
+    try {
+      const { menuLunchId } = req.params;
+      const menuLunch = await menuLunchSchema.deleteOne({ _id: menuLunchId });
+      if (menuLunch.deletedCount === 0) return next(404);
+      resp.status(200).json(menuLunch);
+    } catch (error) {
+      return next(error);
+    }
   });
-
   nextMain();
 };

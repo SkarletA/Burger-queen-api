@@ -1,18 +1,18 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 const cors = require('cors');
 const staffSchema = require('../models/staffSch');
 
 const {
-  requireAuth,
+  // requireAuth,
   requireAdmin,
 } = require('../middleware/auth');
 
 const {
   getUsers,
 } = require('../controller/users');
-const res = require('express/lib/response');
-const req = require('express/lib/request');
+// const res = require('express/lib/response');
+// const req = require('express/lib/request');
 
 const initAdminUser = (app, next) => {
   const { adminEmail, adminPassword } = app.get('config');
@@ -20,40 +20,14 @@ const initAdminUser = (app, next) => {
     return next(403);
   }
 
-  const adminUser = {
-    email: adminEmail,
-    password: bcrypt.hashSync(adminPassword, 10),
-    roles: { admin: true },
-  };
+  // const adminUser = {
+  // email: adminEmail,
+  // password: bcrypt.hashSync(adminPassword, 10),
+  // roles: { admin: true },
+  // };
 
   next();
 };
-
-/*
- * Diagrama de flujo de una aplicación y petición en node - express :
- *
- * request  -> middleware1 -> middleware2 -> route
- *                                             |
- * response <- middleware4 <- middleware3   <---
- *
- * la gracia es que la petición va pasando por cada una de las funciones
- * intermedias o "middlewares" hasta llegar a la función de la ruta, luego esa
- * función genera la respuesta y esta pasa nuevamente por otras funciones
- * intermedias hasta responder finalmente a la usuaria.
- *
- * Un ejemplo de middleware podría ser una función que verifique que una usuaria
- * está realmente registrado en la aplicación y que tiene permisos para usar la
- * ruta. O también un middleware de traducción, que cambie la respuesta
- * dependiendo del idioma de la usuaria.
- *
- * Es por lo anterior que siempre veremos los argumentos request, response y
- * next en nuestros middlewares y rutas. Cada una de estas funciones tendrá
- * la oportunidad de acceder a la consulta (request) y hacerse cargo de enviar
- * una respuesta (rompiendo la cadena), o delegar la consulta a la siguiente
- * función en la cadena (invocando next). De esta forma, la petición (request)
- * va pasando a través de las funciones, así como también la respuesta
- * (response).
- */
 
 /** @module users */
 module.exports = (app, next) => {
@@ -103,12 +77,17 @@ module.exports = (app, next) => {
    * @code {403} si no es ni admin o la misma usuaria
    * @code {404} si la usuaria solicitada no existe
    */
-  app.get('/staffs/:uid', cors(corsOptions), requireAuth, (req, resp) => {
-    const { uid } = req.params;
-    staffSchema
-      .findById(uid)
-      .then((data) => resp.json(data))
-      .catch((error) => resp.json({ message: error }));
+  app.get('/staffs/:uid', cors(corsOptions), requireAdmin, async (req, resp, next) => {
+    try {
+      const { uid } = req.params;
+      const user = await staffSchema.findById(uid);
+      if (!user) {
+        resp.status(404).json({ message: `El ${uid} no existe` });
+      }
+      resp.status(200).json(user);
+    } catch (error) {
+      return next(error);
+    }
   });
 
   /**
@@ -130,14 +109,20 @@ module.exports = (app, next) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {403} si ya existe usuaria con ese `email`
    */
-  app.post('/staffs', requireAdmin, (req, resp, next) => {
+  app.post('/staffs', requireAdmin, async (req, resp, next) => {
     // decodificar token, si es admin permitir si no denegar
-    console.info(req.body);
-    const staff = staffSchema(req.body);
-    staff
-      .save()
-      .then((data) => resp.json(data))
-      .catch((error) => resp.json({ message: error }));
+    try {
+      const staff = staffSchema(req.body);
+      console.info(staff.email);
+      const dbUser = await staffSchema.findOne({ email: staff.email }).exec();
+      if (dbUser) return next(403);
+      const user = await staff.save();
+      if (!user) return next(404);
+
+      resp.status(200).json(user);
+    } catch (error) {
+      return next(error);
+    }
   });
 
   /**
@@ -162,20 +147,26 @@ module.exports = (app, next) => {
    * @code {403} una usuaria no admin intenta de modificar sus `roles`
    * @code {404} si la usuaria solicitada no existe
    */
-  app.put('/staffs/:uid', requireAuth, (req, resp, next) => {
-    const { uid } = req.params;
-    const {
-      role, name, lastname, email, date,
-    } = req.body;
+  app.put('/staffs/:uid', requireAdmin, async (req, resp, next) => {
+    try {
+      const { uid } = req.params;
+      const {
+        role, name, lastname, email, date,
+      } = req.body;
 
-    staffSchema
-      .updateOne({ _id: uid }, {
-        $set: {
-          role, name, lastname, email, date,
-        },
-      })
-      .then((data) => resp.json(data))
-      .catch((error) => resp.json({ message: error }));
+      const user = await staffSchema
+        .updateOne({ _id: uid }, {
+          $set: {
+            role, name, lastname, email, date,
+          },
+        });
+
+      if (user.modifiedCount === 0) return next(404);
+
+      resp.status(200).json(user);
+    } catch (error) {
+      return next(error);
+    }
   });
 
   /**
@@ -194,13 +185,15 @@ module.exports = (app, next) => {
    * @code {403} si no es ni admin o la misma usuaria
    * @code {404} si la usuaria solicitada no existe
    */
-  app.delete('/staffs/:uid', requireAuth, (req, resp, next) => {
-    const { uid } = req.params;
-    staffSchema
-      .remove({ _id: uid })
-      .then((data) => resp.json(data))
-      .catch((error) => resp.json({ message: error }));
+  app.delete('/staffs/:uid', requireAdmin, async (req, resp, next) => {
+    try {
+      const { uid } = req.params;
+      const user = await staffSchema.deleteOne({ _id: uid });
+      if (user.deletedCount === 0) return next(404);
+      resp.status(200).json(user);
+    } catch (error) {
+      return next(error);
+    }
   });
-
   initAdminUser(app, next);
 };

@@ -1,9 +1,12 @@
 const staffSchema = require('../models/staffSch');
 
 module.exports = {
-  getUsers: (req, resp, next) => {
-    staffSchema.find().exec((err, staffs) => {
-      resp.json(staffs);
-    });
+  getUsers: async (req, resp, next) => {
+    try {
+      const data = await staffSchema.find();
+      resp.status(200).json(data);
+    } catch (error) {
+      return next(error);
+    }
   },
 };
