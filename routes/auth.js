@@ -20,8 +20,6 @@ module.exports = (app, nextMain) => {
    */
   app.post('/auth', async (req, resp, next) => {
     const { email, password } = req.body;
-    // const email = 'admin@localhost';
-    // const password = 'changeme';
 
     // buscar en base de datos si hay registro retornar token 200
     // si no hay registro retornar no encontrado 400
@@ -32,9 +30,10 @@ module.exports = (app, nextMain) => {
 
     // TODO: autenticar a la usuarix
     // guardar role de la base de datos
-    // const user = staffSchema.findOne({ email }, (err, obj) => obj.email);
+
     const user = await staffSchema.findOne({ email }).exec();
-    console.info(user);
+
+    if (!user) next(404);
 
     function generateAccessToken(user) {
       return jwt.sign(user, secret, { expiresIn: '120m' });

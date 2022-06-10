@@ -39,11 +39,14 @@ module.exports = (app, nextMain) => {
    * @code {200} si la autenticación es correcta
    * @code {401} si no hay cabecera de autenticación
    */
-  app.get('/orders', cors(corsOptions), requireAuth, (req, resp, next) => {
-    orderSchema
-      .find()
-      .then((data) => resp.json(data))
-      .catch((error) => resp.json({ message: error }));
+  app.get('/orders', cors(corsOptions), requireAuth, async (req, resp, next) => {
+    try {
+      const orders = await orderSchema.find();
+      if (!orders) return next(400);
+      resp.status(200).json(orders);
+    } catch (error) {
+      return next(error);
+    }
   });
 
   /**
@@ -67,12 +70,16 @@ module.exports = (app, nextMain) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {404} si la orden con `orderId` indicado no existe
    */
-  app.get('/orders/:orderId', cors(corsOptions), requireAuth, (req, resp, next) => {
-    const { orderId } = req.params;
-    orderSchema
-      .findById(orderId)
-      .then((data) => resp.json(data))
-      .catch((error) => resp.json({ message: error }));
+  app.get('/orders/:orderId', cors(corsOptions), requireAuth, async (req, resp, next) => {
+    try {
+      const { orderId } = req.params;
+      const order = await orderSchema.findById(orderId);
+      if (!order) return next(404);
+
+      resp.status(200).json(order);
+    } catch (error) {
+      return next(error);
+    }
   });
 
   /**
@@ -101,12 +108,19 @@ module.exports = (app, nextMain) => {
    * @code {400} no se indica `userId` o se intenta crear una orden sin productos
    * @code {401} si no hay cabecera de autenticación
    */
-  app.post('/orders', requireAuth, (req, resp, next) => {
-    const order = orderSchema(req.body);
-    order
-      .save()
-      .then((data) => resp.json(data))
-      .catch((error) => resp.json({ message: error }));
+  app.post('/orders', requireAuth, async (req, resp, next) => {
+    try {
+      const order = orderSchema(req.body);
+      // const lengthProduct = order.products.length === 0;
+      const dbOrder = await orderSchema.findOne({ client: order.client });
+      if (dbOrder) return next(400);
+      const orders = await order.save();
+      if (!orders) return next(404);
+
+      resp.status(200).json(order);
+    } catch (error) {
+      return next(error);
+    }
   });
 
   /**
@@ -137,34 +151,38 @@ module.exports = (app, nextMain) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {404} si la orderId con `orderId` indicado no existe
    */
-  app.put('/orders/:orderId', requireAuth, (req, resp, next) => {
-    const { orderId } = req.params;
-    const {
-      client,
-      table,
-      total,
-      status,
-      hours,
-      startTime,
-      endTime,
-      totalTime,
-    } = req.body;
+  app.put('/orders/:orderId', requireAuth, async (req, resp, next) => {
+    try {
+      const { orderId } = req.params;
+      const {
+        client,
+        table,
+        total,
+        status,
+        hours,
+        startTime,
+        endTime,
+        totalTime,
+      } = req.body;
 
-    orderSchema
-      .updateOne({ _id: orderId }, {
-        $set: {
-          client,
-          table,
-          total,
-          status,
-          hours,
-          startTime,
-          endTime,
-          totalTime,
-        },
-      })
-      .then((data) => resp.json(data))
-      .catch((error) => resp.json({ message: error }));
+      const orders = await orderSchema
+        .updateOne({ _id: orderId }, {
+          $set: {
+            client,
+            table,
+            total,
+            status,
+            hours,
+            startTime,
+            endTime,
+            totalTime,
+          },
+        });
+      if (orders.modifiedCount === 0) return next(404);
+      resp.status(200).json(orders);
+    } catch (error) {
+      return next(error);
+    }
   });
 
   /**
@@ -193,12 +211,15 @@ module.exports = (app, nextMain) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {404} si el producto con `orderId` indicado no existe
    */
-  app.delete('/orders/:orderId', requireAuth, (req, resp, next) => {
-    const { orderId } = req.params;
-    orderSchema
-      .remove({ _id: orderId })
-      .then((data) => resp.json(data))
-      .catch((error) => resp.json({ message: error }));
+  app.delete('/orders/:orderId', requireAuth, async (req, resp, next) => {
+    try {
+      const { orderId } = req.params;
+      const order = await orderSchema.deleteOne({ _id: orderId });
+      if (order.deletedCount === 0) return next(404);
+      resp.status(200).json(order);
+    } catch (error) {
+      return next(error);
+    }
   });
 
   nextMain();

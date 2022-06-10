@@ -38,11 +38,14 @@ module.exports = (app, nextMain) => {
    * @code {200} si la autenticación es correcta
    * @code {401} si no hay cabecera de autenticación
    */
-  app.get('/menu', cors(corsOptions), requireAuth, (req, resp, next) => {
-    menuSchema
-      .find()
-      .then((data) => resp.json(data))
-      .catch((error) => resp.json({ message: error }));
+  app.get('/menu', cors(corsOptions), requireAuth, async (req, resp, next) => {
+    try {
+      const menu = await menuSchema.find();
+      if (!menu) return next(404);
+      resp.status(200).json(menu);
+    } catch (error) {
+      return next(error);
+    }
   });
 
   /**
@@ -62,12 +65,16 @@ module.exports = (app, nextMain) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {404} si el producto con `menuId` indicado no existe
    */
-  app.get('/menu/:menuId', cors(corsOptions), requireAuth, (req, resp, next) => {
-    const { menuId } = req.params;
-    menuSchema
-      .findById(menuId)
-      .then((data) => resp.json(data))
-      .catch((error) => resp.json({ message: error }));
+  app.get('/menu/:menuId', cors(corsOptions), requireAuth, async (req, resp, next) => {
+    try {
+      const { menuId } = req.params;
+      const menu = await menuSchema.findById(menuId);
+      if (!menu) return next(404);
+
+      resp.status(200).json(menu);
+    } catch (error) {
+      return next(error);
+    }
   });
 
   /**
@@ -92,12 +99,18 @@ module.exports = (app, nextMain) => {
    * @code {403} si no es admin
    * @code {404} si el producto con `menuId` indicado no existe
    */
-  app.post('/menu', requireAdmin, (req, resp, next) => {
-    const menu = menuSchema(req.body);
-    menu
-      .save()
-      .then((data) => resp.json(data))
-      .catch((error) => resp.json({ message: error }));
+  app.post('/menu', requireAdmin, async (req, resp, next) => {
+    try {
+      const menu = menuSchema(req.body);
+      const dbMenu = await menuSchema.findOne({ name: menu.name }).exec();
+      if (dbMenu) return next(403);
+      const menuSave = await menu.save();
+      if (!menuSave) return next(404);
+
+      resp.status(200).json(menu);
+    } catch (error) {
+      return next(error);
+    }
   });
 
   /**
@@ -123,19 +136,24 @@ module.exports = (app, nextMain) => {
    * @code {403} si no es admin
    * @code {404} si el producto con `menuId` indicado no existe
    */
-  app.put('/menu/:menuId', requireAdmin, (req, resp, next) => {
-    const { menuId } = req.params;
-    const {
-      name, price, popularity, image,
-    } = req.body;
-    menuSchema
-      .updateOne({ _id: menuId }, {
-        $set: {
-          name, price, popularity, image,
-        },
-      })
-      .then((data) => resp.json(data))
-      .catch((error) => resp.json({ message: error }));
+  app.put('/menu/:menuId', requireAdmin, async (req, resp, next) => {
+    try {
+      const { menuId } = req.params;
+      const {
+        name, price, popularity, image,
+      } = req.body;
+
+      const menu = await menuSchema
+        .updateOne({ _id: menuId }, {
+          $set: {
+            name, price, popularity, image,
+          },
+        });
+      if (menu.modifiedCount === 0) return next(404);
+      resp.status(200).json(menu);
+    } catch (error) {
+      return next(error);
+    }
   });
 
   /**
@@ -156,12 +174,15 @@ module.exports = (app, nextMain) => {
    * @code {403} si no es ni admin
    * @code {404} si el producto con `menuId` indicado no existe
    */
-  app.delete('/menu/:menuId', requireAdmin, (req, resp, next) => {
-    const { menuId } = req.params;
-    menuSchema
-      .remove({ _id: menuId })
-      .then((data) => resp.json(data))
-      .catch((error) => resp.json({ message: error }));
+  app.delete('/menu/:menuId', requireAdmin, async (req, resp, next) => {
+    try {
+      const { menuId } = req.params;
+      const menu = await menuSchema.deleteOne({ _id: menuId });
+      if (menu.deletedCount === 0) return next(404);
+      resp.status(200).json(menu);
+    } catch (error) {
+      return next(error);
+    }
   });
 
   nextMain();
