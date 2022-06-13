@@ -111,13 +111,19 @@ module.exports = (app, nextMain) => {
   app.post('/orders', requireAuth, async (req, resp, next) => {
     try {
       const order = orderSchema(req.body);
-      // const lengthProduct = order.products.length === 0;
-      const dbOrder = await orderSchema.findOne({ client: order.client });
-      if (dbOrder) return next(400);
-      const orders = await order.save();
-      if (!orders) return next(404);
-
-      resp.status(200).json(order);
+      console.info(order);
+      const { products } = order;
+      if (order._id && products && products.length !== 0) {
+        products.forEach(async (product) => {
+          const productFound = await orderSchema.findById(product.product._id).exec();
+          if (!productFound) return resp.send(`${product._id} does not exists`);
+        });
+        const orders = await order.save();
+        if (!orders) return next(404);
+        resp.status(200).json(order);
+      }
+      if (order.status && !(['process', 'ready', 'delivered']).includes(order.status)) return next(400);
+      resp.status(400).json('no se indica `userId` o se intenta crear una orden sin productos');
     } catch (error) {
       return next(error);
     }
