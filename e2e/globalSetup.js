@@ -1,7 +1,9 @@
+/* eslint-disable no-promise-executor-return */
 const path = require('path');
 const { spawn } = require('child_process');
 const kill = require('tree-kill');
 
+const nodeFetch = require('node-fetch');
 const config = require('../config');
 
 const port = process.env.PORT || 8888;
@@ -17,7 +19,7 @@ const __e2e = {
   adminToken: null,
   testUserCredentials: {
     email: 'test@test.test',
-    password: '123456',
+    password: '12D12@',
   },
   testUserToken: null,
   childProcessPid: null,
@@ -27,19 +29,18 @@ const __e2e = {
   // testObjects: [],
 };
 
-const fetch = (url, opts = {}) => import('node-fetch')
-  .then(({ default: fetch }) => fetch(`${baseUrl}${url}`, {
-    ...opts,
-    headers: {
-      'content-type': 'application/json',
-      ...opts.headers,
-    },
-    ...(
-      opts.body && typeof opts.body !== 'string'
-        ? { body: JSON.stringify(opts.body) }
-        : {}
-    ),
-  }));
+const fetch = (url, opts = {}) => nodeFetch(`${baseUrl}${url}`, {
+  ...opts,
+  headers: {
+    'content-type': 'application/json',
+    ...opts.headers,
+  },
+  ...(
+    opts.body && typeof opts.body !== 'string'
+      ? { body: JSON.stringify(opts.body) }
+      : {}
+  ),
+});
 
 const fetchWithAuth = (token) => (url, opts = {}) => fetch(url, {
   ...opts,
@@ -52,7 +53,7 @@ const fetchWithAuth = (token) => (url, opts = {}) => fetch(url, {
 const fetchAsAdmin = (url, opts) => fetchWithAuth(__e2e.adminToken)(url, opts);
 const fetchAsTestUser = (url, opts) => fetchWithAuth(__e2e.testUserToken)(url, opts);
 
-const createTestUser = () => fetchAsAdmin('/empleados', {
+const createTestUser = () => fetchAsAdmin('/staffs', {
   method: 'POST',
   body: __e2e.testUserCredentials,
 })
@@ -108,7 +109,7 @@ module.exports = () => new Promise((resolve, reject) => {
   // TODO: Configurar DB de tests
 
   console.info('Staring local server...');
-  const child = spawn('npm', ['start', process.env.PORT || 8888], {
+  const child = spawn('nodemon', ['index', process.env.PORT || 8888], {
     cwd: path.resolve(__dirname, '../'),
     stdio: ['ignore', 'pipe', 'pipe'],
   });
@@ -135,7 +136,7 @@ module.exports = () => new Promise((resolve, reject) => {
 
   waitForServerToBeReady()
     .then(checkAdminCredentials)
-    .then(createTestUser)
+    .then(createTestUser())
     .then(resolve)
     .catch((err) => {
       kill(child.pid, 'SIGKILL', () => reject(err));
