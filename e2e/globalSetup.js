@@ -16,12 +16,12 @@ const __e2e = {
     email: config.adminEmail,
     password: config.adminPassword,
   },
-  adminToken: null,
+  adminToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNrYXJsZXQxNW1AZ21haWwuY29tIiwiaWF0IjoxNjU1MjQxODM4LCJleHAiOjE2NTUyNDkwMzh9.QTnn7P7l4IDSDbc6h0bpQMWuV8aoLYFJ_ctgYT1R-xA',
   testUserCredentials: {
     email: 'test@test.test',
     password: '12D12@',
   },
-  testUserToken: null,
+  testUserToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNrYXJsZXQxNW1AZ21haWwuY29tIiwiaWF0IjoxNjU1MjQxODM4LCJleHAiOjE2NTUyNDkwMzh9.QTnn7P7l4IDSDbc6h0bpQMWuV8aoLYFJ_ctgYT1R-xA',
   childProcessPid: null,
   // in `testObjects` we keep track of objects created during the test run so
   // that we can clean up before exiting.
