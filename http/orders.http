@@ -25,8 +25,23 @@ Content-Type: application/json
   "startTime": 1653323273796,
   "endTime": 1653324513486,
   "totalTime": 21,
-  "products": [],
-  "id": 17
+  "products": [
+    {
+      "name": "Sandwich",
+      "price": 15,
+      "popularity": 4.8,
+      "image": "https://eggs.org.nz/wp-content/uploads/2021/12/Club-Sandwiches-500x500.jpg",
+      "id": 4
+    },
+    {
+      "id": 2,
+      "name": "Cafe",
+      "price": 7,
+      "popularity": 5,
+      "image": "https://ae01.alicdn.com/kf/H1c2054b527494e9faee9a11dfd37572bi.jpg"
+    }
+  ],
+  "id": 10
 }
 
 ### Edit orders
@@ -39,6 +54,6 @@ Content-Type: application/json
 }
 
 ### Delete orders
-DELETE http://localhost:8080/orders/62a753cdfa6364b5f9c6a63a HTTP/1.1
+DELETE http://localhost:8080/orders/62a7557b140f2077eeab2875 HTTP/1.1
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNrYXJsZXQxNW1AZ21haWwuY29tIiwiaWF0IjoxNjU1MTMxMjI3LCJleHAiOjE2NTUxMzg0Mjd9.zwWZIxKM2-if5-0kViWXnWaRnaaGlvYYEBjafH6Hba8
 
