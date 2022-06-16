@@ -108,7 +108,7 @@ module.exports = (app, nextMain) => {
    * @code {400} no se indica `userId` o se intenta crear una orden sin productos
    * @code {401} si no hay cabecera de autenticación
    */
-  app.post('/orders', requireAuth, async (req, resp, next) => {
+  app.post('/orders', cors(corsOptions), requireAuth, async (req, resp, next) => {
     try {
       const order = orderSchema(req.body);
       console.info(order);
@@ -157,7 +157,7 @@ module.exports = (app, nextMain) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {404} si la orderId con `orderId` indicado no existe
    */
-  app.put('/orders/:orderId', requireAuth, async (req, resp, next) => {
+  app.put('/orders/:orderId', cors(corsOptions), requireAuth, async (req, resp, next) => {
     try {
       const { orderId } = req.params;
       const {
@@ -217,7 +217,7 @@ module.exports = (app, nextMain) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {404} si el producto con `orderId` indicado no existe
    */
-  app.delete('/orders/:orderId', requireAuth, async (req, resp, next) => {
+  app.delete('/orders/:orderId', cors(corsOptions), requireAuth, async (req, resp, next) => {
     try {
       const { orderId } = req.params;
       const order = await orderSchema.deleteOne({ _id: orderId });
