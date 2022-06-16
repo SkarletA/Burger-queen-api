@@ -17,10 +17,6 @@ const menuLunchSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  id: {
-    type: Number,
-    required: true,
-  },
 });
 
 const menuLunch = mongoose.model('menuLunch', menuLunchSchema);

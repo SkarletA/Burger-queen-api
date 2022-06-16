@@ -17,10 +17,6 @@ const menuSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  id: {
-    type: Number,
-    required: true,
-  },
 });
 
 // menuSchema.query.byRole = (name) => this.where({ name: new RegExp(name, 'i') });

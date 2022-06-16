@@ -109,7 +109,7 @@ module.exports = (app, next) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {403} si ya existe usuaria con ese `email`
    */
-  app.post('/staffs', requireAdmin, async (req, resp, next) => {
+  app.post('/staffs', requireAdmin, cors(corsOptions), async (req, resp, next) => {
     // decodificar token, si es admin permitir si no denegar
     try {
       const staff = staffSchema(req.body);

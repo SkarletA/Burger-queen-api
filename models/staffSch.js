@@ -21,10 +21,6 @@ const staffSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  id: {
-    type: Number,
-    required: true,
-  },
 });
 
 staffSchema.query.byRole = (role) => this.where({ role: new RegExp(role, 'i') });
