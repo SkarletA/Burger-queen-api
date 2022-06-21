@@ -13,7 +13,7 @@ module.exports = (app, nextMain) => {
   app.use(cors());
 
   const corsOptions = {
-    origin: `${urlServer}:3000`,
+    origin: `${urlServer}`,
     optionSucessStatus: 200,
   };
   /**

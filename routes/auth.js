@@ -6,7 +6,7 @@ const staffSchema = require('../models/staffSch');
 const { secret, urlServer } = config;
 
 const corsOptions = {
-  origin: `${urlServer}:3000`,
+  origin: `${urlServer}`,
   optionSucessStatus: 200,
 };
 

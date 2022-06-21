@@ -13,7 +13,7 @@ const root = (app, next) => {
   app.use(cors());
 
   const corsOptions = {
-    origin: `${urlServer}:3000`,
+    origin: `${urlServer}`,
     optionSucessStatus: 200,
   };
   app.get('/', cors(corsOptions), (req, res) => res.json({ name: pkg.name, version: pkg.version }));
