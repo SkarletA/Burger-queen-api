@@ -1,8 +1,14 @@
 const jwt = require('jsonwebtoken');
+const cors = require('cors');
 const config = require('../config');
 const staffSchema = require('../models/staffSch');
 
 const { secret } = config;
+
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  optionSucessStatus: 200,
+};
 
 /** @module auth */
 module.exports = (app, nextMain) => {
@@ -18,7 +24,7 @@ module.exports = (app, nextMain) => {
    * @code {400} si no se proveen `email` o `password` o ninguno de los dos
    * @auth No requiere autenticación
    */
-  app.post('/auth', async (req, resp, next) => {
+  app.post('/auth', cors(corsOptions), async (req, resp, next) => {
     const { email, password } = req.body;
 
     // buscar en base de datos si hay registro retornar token 200
@@ -40,12 +46,7 @@ module.exports = (app, nextMain) => {
     }
     const accessToken = generateAccessToken({ email: user.email });
 
-    resp.header('authorization', accessToken).json({
-      message: 'si la autenticación es correcta',
-      token: accessToken,
-    });
-
-    next(200);
+    resp.status(200).json({ token: accessToken });
   });
 
   return nextMain();

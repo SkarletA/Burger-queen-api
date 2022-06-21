@@ -1,6 +1,11 @@
 version: "3"
 services:
   db:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: gsmaggie001@gmail.com
+      MONGO_INITDB_ROOT_PASSWORD: Ddevsdevs
     # TODO: configura tu imagen de base de datos, te recomendamos una de estas:
     # https://hub.docker.com/_/mongo
     # https://hub.docker.com/_/postgres
@@ -8,16 +13,18 @@ services:
     networks:
       - private
   node:
-    image: node:12 # https://hub.docker.com/_/node/
-    user: node
-    working_dir: /home/node/app
+    # image: node:14-alpine3.15 # https://hub.docker.com/_/node/
+    # user: node
+    # working_dir: /home/node/app
+    build: .
     environment:
       NODE_ENV: production
       PORT: 8080
-      DB_URL: <CONNECTION STRING>
-      JWT_SECRET: xxxxxxxx
-      ADMIN_EMAIL: admin@localhost
-      ADMIN_PASSWORD: changeme
+      DB_URL: 'mongodb://localhost:27017/test'
+      JWT_SECRET: 'esta-es-la-api-burger-queen'
+      ADMIN_EMAIL: 'gsmaggie001@gmail.com'
+      ADMIN_PASSWORD: 'D123@devs'
+      DB_MONGO: 'mongodb+srv://gsmaggie001:Ddevsdevs@cluster0.gbdwy9g.mongodb.net/?retryWrites=true&w=majority'
     volumes:
       - ./:/home/node/app # montamos el codigo en el HOME del usuario _node_
     expose:
@@ -25,9 +32,9 @@ services:
     ports:
       # mapeamos el puerto 8080 de nuestro contenedor al puerto 80 de nuestra
       # máquina
-      - 80:8080
+      - 8080:8080
     # reinstalamos las dependencias y levantamos el servidor
-    command: bash -c 'rm -rf node_modules && npm install && npm start'
+    # command: bash -c 'rm -rf node_modules && npm install && npm start'
     depends_on:
       - db
     networks:

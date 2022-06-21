@@ -115,7 +115,7 @@ module.exports = (app, nextMain) => {
       const { products } = order;
       if (order._id && products && products.length !== 0) {
         products.forEach(async (product) => {
-          const productFound = await orderSchema.findById(product.product._id).exec();
+          const productFound = await orderSchema.findOne(product._id).exec();
           if (!productFound) return resp.send(`${product._id} does not exists`);
         });
         const orders = await order.save();
