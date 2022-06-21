@@ -51,16 +51,8 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
-      id: {
-        type: Number,
-        required: true,
-      },
     },
   ],
-  id: {
-    type: Number,
-    required: true,
-  },
 });
 
 const order = mongoose.model('order', orderSchema);
