@@ -2,6 +2,9 @@ const express = require('express');
 // const bcrypt = require('bcrypt');
 const cors = require('cors');
 const staffSchema = require('../models/staffSch');
+const config = require('../config');
+
+const { urlServer } = config;
 
 const {
   // requireAuth,
@@ -35,7 +38,7 @@ module.exports = (app, next) => {
   app.use(cors());
 
   const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: `${urlServer}:3000`,
     optionSucessStatus: 200,
   };
   /**
