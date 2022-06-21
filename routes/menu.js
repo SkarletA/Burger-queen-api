@@ -1,5 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const config = require('../config');
+
+const { urlServer } = config;
 const {
   requireAuth,
   requireAdmin,
@@ -13,7 +16,7 @@ module.exports = (app, nextMain) => {
   app.use(cors());
 
   const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: `${urlServer}`,
     optionSucessStatus: 200,
   };
   /**

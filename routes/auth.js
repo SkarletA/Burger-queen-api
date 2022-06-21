@@ -3,10 +3,10 @@ const cors = require('cors');
 const config = require('../config');
 const staffSchema = require('../models/staffSch');
 
-const { secret } = config;
+const { secret, urlServer } = config;
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: `${urlServer}`,
   optionSucessStatus: 200,
 };
 

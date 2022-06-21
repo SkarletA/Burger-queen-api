@@ -2,6 +2,9 @@ const cors = require('cors');
 const {
   requireAuth,
 } = require('../middleware/auth');
+const config = require('../config');
+
+const { urlServer } = config;
 
 const orderSchema = require('../models/orderSch');
 
@@ -10,7 +13,7 @@ module.exports = (app, nextMain) => {
   app.use(cors());
 
   const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: `${urlServer}`,
     optionSucessStatus: 200,
   };
   /**

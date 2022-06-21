@@ -1,4 +1,7 @@
 const cors = require('cors');
+const config = require('../config');
+
+const { urlServer } = config;
 const auth = require('./auth');
 const staff = require('./staff');
 const menu = require('./menu');
@@ -10,7 +13,7 @@ const root = (app, next) => {
   app.use(cors());
 
   const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: `${urlServer}`,
     optionSucessStatus: 200,
   };
   app.get('/', cors(corsOptions), (req, res) => res.json({ name: pkg.name, version: pkg.version }));
