@@ -16,7 +16,7 @@ const root = (app, next) => {
     origin: `${urlServer}`,
     optionSucessStatus: 200,
   };
-  app.get('/', cors(corsOptions), (req, res) => res.json({ name: pkg.name, version: pkg.version }));
+  app.get('/', cors(corsOptions), (req, res) => res.json({ name: pkg.name, version: pkg.versio, urlServer }));
   app.all('*', (req, resp, nextAll) => nextAll(404));
   // const test = app._router.stack.filter((r) => r.route)
   // .map((r) => Object.keys(r.route.methods)[0].toUpperCase().padEnd(7) + r.route.path).join("\n")
