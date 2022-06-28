@@ -105,7 +105,7 @@ Se busco resolver la problematica de mantener el Front de nuestra aplicación de
 
 ## 4. Conocimientos reforzados
 
-🖥 4so de funciones\
+🖥 Uso de funciones\
 🖥 Ciclos (ForEach)\
 🖥 Condicionales (If, else, else if)\
 🖥 Array Metods (.filter/ .map/ .reduce)\
@@ -116,7 +116,7 @@ Se busco resolver la problematica de mantener el Front de nuestra aplicación de
 
 ## 5. Conocimientos adquiridos
 
-💻 5TTP (body, verbos, codigo de status)
+💻 HTTP (body, verbos, codigo de status)
 💻 Encoding y JSON \
 💻 Node JS \
 💻 CORS \
@@ -130,14 +130,14 @@ Se busco resolver la problematica de mantener el Front de nuestra aplicación de
 
 ## 6. Extras
 
-⌨  6.ockers \
+⌨ Dockers \
 ⌨ Heroku \
 ⌨ Markdown
 
 ## 7. Habilidades blandas 
 ### (Life Skills)
 🦾 Colaboración \
-🦾 7rofesionalismo \
+🦾 Profesionalismo \
 🦾 Autoaprendizaje \
 🦾 Comunicación eficaz
 
