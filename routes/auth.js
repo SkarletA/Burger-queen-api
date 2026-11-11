@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const cors = require('cors');
 const config = require('../config');
 const staffSchema = require('../models/staffSch');
@@ -27,19 +28,16 @@ module.exports = (app, nextMain) => {
   app.post('/auth', cors(corsOptions), async (req, resp, next) => {
     const { email, password } = req.body;
 
-    // buscar en base de datos si hay registro retornar token 200
-    // si no hay registro retornar no encontrado 400
-
     if (!email || !password) {
       return next(400);
     }
 
-    // TODO: autenticar a la usuarix
-    // guardar role de la base de datos
-
     const user = await staffSchema.findOne({ email }).exec();
 
-    if (!user) next(404);
+    // No revelar si fue el email o la contraseña lo que no coincidió.
+    if (!user || !await bcrypt.compare(password, user.password)) {
+      return next(404);
+    }
 
     function generateAccessToken(user) {
       return jwt.sign(user, secret, { expiresIn: '120m' });

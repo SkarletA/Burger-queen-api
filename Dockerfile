@@ -10,7 +10,9 @@ RUN npm install
 # Bundle app source
 COPY . /home/node/app/
 
-RUN npm run seed
+# El seed necesita conectarse a Mongo con variables de entorno que solo
+# existen en tiempo de ejecución, no durante el build de la imagen.
+# Corre `npm run seed` una sola vez, manualmente, después del deploy.
 
 EXPOSE 8080
 CMD [ "npm", "run", "start" ]

@@ -8,3 +8,4 @@ exports.adminPassword = process.env.ADMIN_PASSWORD;
 exports.adminRole = process.env.ADMIN_ROLE;
 exports.dbMongo = process.env.DB_MONGO;
 exports.urlServer = process.env.URL_SERVER;
+exports.seedStaffPassword = process.env.SEED_STAFF_PASSWORD;
