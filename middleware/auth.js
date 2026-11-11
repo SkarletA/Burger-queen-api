@@ -22,26 +22,32 @@ module.exports = (secret) => (req, resp, next) => {
 };
 
 module.exports.isAuthenticated = async (req) => {
+  if (!req.decodedToken) return false;
   const user = await staffSchema.findOne({ email: req.decodedToken.email }).exec();
-  return req.decodedToken.email === user.email;
+  return !!user && req.decodedToken.email === user.email;
 };
 
 module.exports.isAdmin = async (req) => {
+  if (!req.decodedToken) return false;
   const user = await staffSchema.findOne({ email: req.decodedToken.email }).exec();
-  return user.role === adminRole;
+  return !!user && user.role === adminRole;
 };
 
-module.exports.requireAuth = (req, resp, next) => (
-  (!module.exports.isAuthenticated(req))
-    ? next(401)
-    : next()
-);
+module.exports.requireAuth = async (req, resp, next) => {
+  try {
+    const authenticated = await module.exports.isAuthenticated(req);
+    return authenticated ? next() : next(401);
+  } catch (err) {
+    return next(err);
+  }
+};
 
-module.exports.requireAdmin = (req, resp, next) => (
-  // eslint-disable-next-line no-nested-ternary
-  (!module.exports.isAuthenticated(req))
-    ? next(401)
-    : (!module.exports.isAdmin(req))
-      ? next(403)
-      : next()
-);
+module.exports.requireAdmin = async (req, resp, next) => {
+  try {
+    if (!await module.exports.isAuthenticated(req)) return next(401);
+    const admin = await module.exports.isAdmin(req);
+    return admin ? next() : next(403);
+  } catch (err) {
+    return next(err);
+  }
+};

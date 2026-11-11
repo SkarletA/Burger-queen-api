@@ -4,8 +4,8 @@ services:
     image: mongo
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: gsmaggie001@gmail.com
-      MONGO_INITDB_ROOT_PASSWORD: Ddevsdevs
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
     # TODO: configura tu imagen de base de datos, te recomendamos una de estas:
     # https://hub.docker.com/_/mongo
     # https://hub.docker.com/_/postgres
@@ -20,11 +20,14 @@ services:
     environment:
       NODE_ENV: production
       PORT: 8080
-      DB_URL: 'mongodb://localhost:27017/test'
-      JWT_SECRET: 'esta-es-la-api-burger-queen'
-      ADMIN_EMAIL: 'gsmaggie001@gmail.com'
-      ADMIN_PASSWORD: 'D123@devs'
-      DB_MONGO: 'mongodb+srv://gsmaggie001:Ddevsdevs@cluster0.gbdwy9g.mongodb.net/?retryWrites=true&w=majority'
+      DB_URL: ${DB_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      SEED_STAFF_PASSWORD: ${SEED_STAFF_PASSWORD}
+      # index.js se conecta con DB_MONGO (no con DB_URL); "db" es el nombre
+      # del servicio de mongo en esta misma red, no localhost
+      DB_MONGO: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@db:27017/test?authSource=admin
     volumes:
       - ./:/home/node/app # montamos el codigo en el HOME del usuario _node_
     expose:

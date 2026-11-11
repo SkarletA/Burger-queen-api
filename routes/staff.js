@@ -1,5 +1,5 @@
 const express = require('express');
-// const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 const cors = require('cors');
 const staffSchema = require('../models/staffSch');
 const config = require('../config');
@@ -17,17 +17,27 @@ const {
 // const res = require('express/lib/response');
 // const req = require('express/lib/request');
 
-const initAdminUser = (app, next) => {
-  const { adminEmail, adminPassword } = app.get('config');
+const initAdminUser = async (app, next) => {
+  const { adminEmail, adminPassword, adminRole } = app.get('config');
   if (!adminEmail || !adminPassword) {
-    return next(403);
+    return next();
   }
 
-  // const adminUser = {
-  // email: adminEmail,
-  // password: bcrypt.hashSync(adminPassword, 10),
-  // roles: { admin: true },
-  // };
+  try {
+    const existingAdmin = await staffSchema.findOne({ email: adminEmail }).exec();
+    if (!existingAdmin) {
+      await staffSchema({
+        role: adminRole || 'admin',
+        name: 'Admin',
+        lastname: 'Admin',
+        email: adminEmail,
+        password: bcrypt.hashSync(adminPassword, 10),
+        date: new Date().toISOString().slice(0, 10),
+      }).save();
+    }
+  } catch (error) {
+    console.error('No se pudo inicializar la usuaria admin:', error.message);
+  }
 
   next();
 };
@@ -115,10 +125,11 @@ module.exports = (app, next) => {
   app.post('/staffs', requireAdmin, cors(corsOptions), async (req, resp, next) => {
     // decodificar token, si es admin permitir si no denegar
     try {
-      const staff = staffSchema(req.body);
-      console.info(staff.email);
-      const dbUser = await staffSchema.findOne({ email: staff.email }).exec();
+      const { password, ...rest } = req.body;
+      if (!rest.email || !password) return next(400);
+      const dbUser = await staffSchema.findOne({ email: rest.email }).exec();
       if (dbUser) return next(403);
+      const staff = staffSchema({ ...rest, password: bcrypt.hashSync(password, 10) });
       const user = await staff.save();
       if (!user) return next(404);
 
